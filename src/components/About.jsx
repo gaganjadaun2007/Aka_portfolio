@@ -1,5 +1,7 @@
 import { about } from '../data/content';
 import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { useScrollSpread } from '../hooks/useScrollInteraction';
 
 const RotatingGrid = () => (
   <div className="relative w-full max-w-sm mx-auto aspect-square rounded-full border border-[var(--border-color)] overflow-hidden hidden md:flex items-center justify-center opacity-70">
@@ -23,22 +25,32 @@ const RotatingGrid = () => (
 );
 
 export function About() {
+  const containerRef = useRef(null);
+
+  const { x: visualX, opacity: visualOpacity } = useScrollSpread(containerRef, {
+    offset: ["start end", "end start"],
+    inputRange: [0, 0.5, 1],
+    xOutput: [20, 0, -30],
+    opacityOutput: [0, 1, 0.5]
+  });
+
+  const { x: textX, opacity: textOpacity } = useScrollSpread(containerRef, {
+    offset: ["start end", "end start"],
+    inputRange: [0, 0.5, 1],
+    xOutput: [-20, 0, 30],
+    opacityOutput: [0, 1, 0.5]
+  });
+
   return (
-    <section className="section-container" id="about">
-      <motion.div 
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6 }}
-        className="grid md:grid-cols-[1fr_2fr] gap-8 md:gap-16 items-center"
-      >
-        <div>
+    <section ref={containerRef} className="section-container" id="about">
+      <div className="grid md:grid-cols-[1fr_2fr] gap-8 md:gap-16 items-center">
+        <motion.div style={{ x: visualX, opacity: visualOpacity }}>
           <div className="text-xs font-bold tracking-widest text-[var(--text-secondary)] uppercase mb-6 md:mb-10">
             01 — ABOUT
           </div>
           <RotatingGrid />
-        </div>
-        <div>
+        </motion.div>
+        <motion.div style={{ x: textX, opacity: textOpacity }}>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--text-primary)] mb-8 leading-tight">
             {about.heading}
           </h2>
@@ -53,8 +65,8 @@ export function About() {
               <div key={i} className="flex-1 bg-gradient-to-t from-transparent to-[var(--border-color)] h-full rounded-t-sm" style={{ opacity: 1 - (i * 0.05) }}></div>
             ))}
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </section>
   );
 }
