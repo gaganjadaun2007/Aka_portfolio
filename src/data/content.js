@@ -6,7 +6,7 @@ export const user = {
   bio: 'Computer Science Engineering student exploring AI/ML, software development and real-world problem solving through practical projects.',
   email: '[ADD EMAIL]',
   github: '[ADD GITHUB URL]',
-  linkedin: '[ADD LINKEDIN URL]',
+  linkedin: 'https://www.linkedin.com/in/akanksha-thakur-54b9b0353/',
   resumeUrl: '[ADD RESUME URL]',
 };
 
