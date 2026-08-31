@@ -67,22 +67,21 @@ export const stack = [
 export const projects = [
   {
     id: '01',
-    title: 'PrivLink',
-    category: 'Web Application',
-    description: 'A privacy-focused communication platform designed around a clean and modern messaging experience.',
-    stack: ['React', 'JavaScript', 'CSS'],
+    title: 'Smart Irrigation System',
+    category: 'IoT & Machine Learning',
+    description: 'An intelligent agriculture system that automates irrigation while detecting animals and removing weeds using computer vision.',
+    stack: ['Python', 'Computer Vision', 'IoT', 'Machine Learning'],
     features: [
-      'Messaging interface',
-      'User profiles',
-      'Media sharing',
-      'GIF support',
-      'Chat organization',
-      'Privacy-focused settings'
+      'Automated irrigation scheduling',
+      'Real-time animal detection',
+      'Computer vision weed identification',
+      'Sensor data monitoring',
+      'Alert system for intrusions'
     ],
     githubUrl: '[ADD GITHUB URL]',
     demoUrl: '[ADD LIVE DEMO URL]',
     details: {
-      overview: 'A full-featured messaging application focused on user privacy and a distraction-free interface.',
+      overview: 'A comprehensive IoT and AI-driven agricultural system designed to optimize water usage, protect crops from animals, and manage weeds autonomously.',
       problem: '[ADD PROBLEM]',
       solution: '[ADD SOLUTION]',
       challenges: '[ADD CHALLENGES]',

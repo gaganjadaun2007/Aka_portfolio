@@ -23,29 +23,52 @@ const CloseIcon = ({ size = 24, className = '' }) => (
   </svg>
 );
 
-// Abstract Web Mockup for PrivLink
-const WebMockup = () => (
-  <div className="w-full h-full min-h-[300px] bg-[var(--card-bg)] rounded-t-xl border border-[var(--border-color)] border-b-0 shadow-2xl flex flex-col overflow-hidden theme-transition">
-    <div className="h-8 border-b border-[var(--border-color)] bg-[var(--bg-secondary)] flex items-center px-4 gap-2">
-      <div className="flex gap-1.5">
-        <div className="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
-        <div className="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
-        <div className="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
-      </div>
-      <div className="mx-auto w-1/2 h-4 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-md"></div>
+// Abstract AI/Vision Mockup for Smart Irrigation
+const AIMockup = () => (
+  <div className="w-full h-full min-h-[300px] bg-slate-900 rounded-t-xl border border-slate-800 border-b-0 shadow-2xl p-6 flex flex-col relative overflow-hidden">
+    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-900/30 via-slate-900 to-slate-900"></div>
+    {/* Camera feed simulation */}
+    <div className="relative z-10 w-full flex-1 border border-slate-700/50 bg-slate-800/50 rounded-lg overflow-hidden flex items-center justify-center">
+      <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMGgyMHYyMEgwem0xMCAxMGgxMHYxMEgxMHoiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iLjA1IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=')]"></div>
+      
+      {/* Bounding Box 1 (Weed) */}
+      <motion.div 
+        animate={{ opacity: [0.5, 1, 0.5], scale: [0.98, 1, 0.98] }}
+        transition={{ duration: 2, repeat: Infinity }}
+        className="absolute top-1/4 left-1/3 w-16 h-16 border-2 border-red-500 bg-red-500/10 flex flex-col justify-between"
+      >
+        <div className="bg-red-500 text-white text-[8px] font-mono font-bold px-1 w-fit -mt-4">WEED 98%</div>
+        <div className="w-1 h-1 bg-red-500 -ml-0.5 -mt-0.5"></div>
+        <div className="w-1 h-1 bg-red-500 -ml-0.5 -mb-0.5"></div>
+      </motion.div>
+
+      {/* Bounding Box 2 (Animal) */}
+      <motion.div 
+        animate={{ x: [0, 20, 0], opacity: [0.8, 1, 0.8] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-1/3 right-1/4 w-24 h-20 border-2 border-amber-500 bg-amber-500/10 flex flex-col"
+      >
+        <div className="bg-amber-500 text-white text-[8px] font-mono font-bold px-1 w-fit -mt-4">ANIMAL 92%</div>
+        <div className="w-1 h-1 bg-amber-500 -ml-0.5 -mt-0.5"></div>
+      </motion.div>
+      
+      {/* Scanning line */}
+      <motion.div 
+        animate={{ y: ["0%", "400%", "0%"] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+        className="absolute top-0 left-0 right-0 h-0.5 bg-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+      />
     </div>
-    <div className="flex-1 flex">
-      {/* Sidebar */}
-      <div className="w-1/4 h-full border-r border-[var(--border-color)] bg-[var(--bg-secondary)] p-4 space-y-3 hidden sm:block">
-        <div className="w-full h-8 bg-[var(--color-accent)]/10 rounded-md"></div>
-        <div className="w-3/4 h-3 bg-[var(--border-color)] rounded-sm"></div>
-        <div className="w-1/2 h-3 bg-[var(--border-color)] rounded-sm"></div>
+    <div className="h-12 mt-4 grid grid-cols-3 gap-4 relative z-10">
+      <div className="bg-slate-800 rounded-md border border-slate-700 flex flex-col justify-center px-3">
+         <div className="text-[8px] text-slate-400 font-mono uppercase">Pump Status</div>
+         <div className="text-xs text-emerald-400 font-mono font-bold flex items-center gap-1">
+           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ACTIVE
+         </div>
       </div>
-      {/* Main Chat Area */}
-      <div className="flex-1 p-6 flex flex-col justify-end gap-4">
-        <div className="w-3/4 p-3 bg-[var(--bg-secondary)] rounded-2xl rounded-tl-sm self-start border border-[var(--border-color)]"></div>
-        <div className="w-1/2 p-3 bg-[var(--color-accent)] text-white rounded-2xl rounded-tr-sm self-end"></div>
-        <div className="w-2/3 p-3 bg-[var(--bg-secondary)] rounded-2xl rounded-tl-sm self-start border border-[var(--border-color)]"></div>
+      <div className="bg-slate-800 rounded-md border border-slate-700 flex flex-col justify-center px-3">
+         <div className="text-[8px] text-slate-400 font-mono uppercase">Moisture</div>
+         <div className="text-xs text-blue-400 font-mono font-bold">42% (LOW)</div>
       </div>
     </div>
   </div>
@@ -160,7 +183,7 @@ export function Projects() {
                   transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                   className="relative w-full aspect-[4/3] bg-[var(--bg-secondary)] rounded-3xl border border-[var(--border-color)] overflow-hidden flex items-end justify-center px-8 pt-8 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2 group-hover:scale-[1.02] transition-all duration-500"
                 >
-                  {isFeatured ? <WebMockup /> : <IoTMockup />}
+                  {isFeatured ? <AIMockup /> : <IoTMockup />}
                 </motion.div>
               </div>
             </motion.div>
