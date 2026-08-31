@@ -1,7 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { projects } from '../data/content';
-import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'framer-motion';
-import { useScrollSpread, useIsMobile } from '../hooks/useScrollInteraction';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const GithubIcon = ({ size = 16, className = '' }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -110,84 +109,6 @@ const IoTMockup = () => (
   </div>
 );
 
-// Individual Project Card with dedicated scroll tracking
-const ProjectCard = ({ project, index, handleProjectClick }) => {
-  const cardRef = useRef(null);
-  const isFeatured = index === 0;
-  const isMobile = useIsMobile();
-  const prefersReducedMotion = useReducedMotion();
-
-  // We want the text to spread left (or right) and the image to spread right (or left)
-  // For featured (text left, image right): text x: -40, image x: 40
-  // For normal (text right, image left): text x: 40, image x: -40
-  const textXDir = isFeatured ? -50 : 50;
-  const imgXDir = isFeatured ? 50 : -50;
-
-  const { x: textX, opacity: textOpacity } = useScrollSpread(cardRef, {
-    offset: ["start end", "center center"],
-    inputRange: [0, 1, 1],
-    xOutput: [textXDir, 0, 0],
-    opacityOutput: [0, 1, 1]
-  });
-
-  const { x: imgX, scale: imgScale, opacity: imgOpacity, scrollYProgress } = useScrollSpread(cardRef, {
-    offset: ["start end", "end start"],
-    inputRange: [0, 0.4, 0.6, 1],
-    xOutput: [imgXDir, 0, 0, 0],
-    scaleOutput: [0.94, 1, 1, 0.97],
-    opacityOutput: [0, 1, 1, 0.5]
-  });
-
-  // Additional subtle parallax depth for the image container itself based on scroll
-  const yParallax = useTransform(scrollYProgress, [0, 1], [30, -30]);
-
-  return (
-    <div 
-      ref={cardRef}
-      className={`project-card group relative flex flex-col ${isFeatured ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 md:gap-16 items-center cursor-pointer`}
-      onClick={() => handleProjectClick(project)}
-    >
-      {/* Text Content */}
-      <motion.div 
-        style={prefersReducedMotion ? {} : { x: textX, opacity: textOpacity }}
-        className="flex-1 w-full"
-      >
-        <div className="text-sm font-bold tracking-widest text-[var(--color-accent)] uppercase mb-4">
-          {project.category}
-        </div>
-        <h3 className="text-3xl md:text-5xl font-bold text-[var(--text-primary)] mb-6 transition-colors group-hover:text-[var(--color-accent)]">
-          {project.title}
-        </h3>
-        <p className="text-lg text-[var(--text-secondary)] mb-8 leading-relaxed max-w-xl">
-          {project.description}
-        </p>
-        
-        <div className="flex flex-wrap gap-3 mb-10">
-          {project.stack.map(tech => (
-            <span key={tech} className="px-4 py-2 bg-[var(--bg-secondary)] border border-[var(--border-color)] text-sm font-semibold rounded-full text-[var(--text-primary)]">
-              {tech}
-            </span>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Visual Content */}
-      <motion.div 
-        style={prefersReducedMotion ? {} : { x: imgX, scale: imgScale, opacity: imgOpacity }}
-        className="flex-1 w-full relative"
-      >
-        <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-accent)]/5 to-[var(--color-accent-secondary)]/5 rounded-3xl transform -rotate-2 scale-105 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-        <motion.div 
-          style={prefersReducedMotion ? {} : { y: isMobile ? 0 : yParallax }}
-          className="relative w-full aspect-[4/3] bg-[var(--bg-secondary)] rounded-3xl border border-[var(--border-color)] overflow-hidden flex items-end justify-center px-8 pt-8 shadow-xl group-hover:shadow-2xl transition-shadow duration-500"
-        >
-          {isFeatured ? <AIMockup /> : <IoTMockup />}
-        </motion.div>
-      </motion.div>
-    </div>
-  );
-};
-
 export function Projects() {
   const [activeProject, setActiveProject] = useState(null);
 
@@ -201,18 +122,15 @@ export function Projects() {
     document.body.style.overflow = 'auto';
   };
 
-  const containerRef = useRef(null);
-
-  const { y: headerY, opacity: headerOpacity } = useScrollSpread(containerRef, {
-    offset: ["start end", "end start"],
-    inputRange: [0, 0.2, 1],
-    yOutput: [30, 0, -30],
-    opacityOutput: [0, 1, 0.5]
-  });
-
   return (
-    <section ref={containerRef} className="section-container" id="work">
-      <motion.div style={{ y: headerY, opacity: headerOpacity }} className="mb-16">
+    <section className="section-container" id="work">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6 }}
+        className="mb-16"
+      >
         <div className="text-xs font-bold tracking-widest text-[var(--text-secondary)] uppercase mb-6">
           03 — SELECTED WORK
         </div>
@@ -222,14 +140,55 @@ export function Projects() {
       </motion.div>
 
       <div className="space-y-16 md:space-y-32">
-        {projects.map((project, index) => (
-          <ProjectCard 
-            key={project.id} 
-            project={project} 
-            index={index} 
-            handleProjectClick={handleProjectClick} 
-          />
-        ))}
+        {projects.map((project, index) => {
+          const isFeatured = index === 0;
+          return (
+            <motion.div 
+              key={project.id}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className={`project-card group relative flex flex-col ${isFeatured ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 md:gap-16 items-center cursor-pointer`}
+              onClick={() => handleProjectClick(project)}
+            >
+              {/* Text Content */}
+              <div className="flex-1 w-full">
+                <div className="text-sm font-bold tracking-widest text-[var(--color-accent)] uppercase mb-4">
+                  {project.category}
+                </div>
+                <h3 className="text-3xl md:text-5xl font-bold text-[var(--text-primary)] mb-6 transition-colors group-hover:text-[var(--color-accent)]">
+                  {project.title}
+                </h3>
+                <p className="text-lg text-[var(--text-secondary)] mb-8 leading-relaxed max-w-xl">
+                  {project.description}
+                </p>
+                
+                <div className="flex flex-wrap gap-3 mb-10">
+                  {project.stack.map(tech => (
+                    <span key={tech} className="px-4 py-2 bg-[var(--bg-secondary)] border border-[var(--border-color)] text-sm font-semibold rounded-full text-[var(--text-primary)]">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Visual Content */}
+              <div className="flex-1 w-full relative">
+                <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-accent)]/5 to-[var(--color-accent-secondary)]/5 rounded-3xl transform -rotate-2 scale-105 opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.94, x: isFeatured ? 40 : -40 }}
+                  whileInView={{ opacity: 1, scale: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                  className="relative w-full aspect-[4/3] bg-[var(--bg-secondary)] rounded-3xl border border-[var(--border-color)] overflow-hidden flex items-end justify-center px-8 pt-8 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2 group-hover:scale-[1.02] transition-all duration-500"
+                >
+                  {isFeatured ? <AIMockup /> : <IoTMockup />}
+                </motion.div>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* Project Modal */}

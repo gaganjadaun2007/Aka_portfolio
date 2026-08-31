@@ -1,8 +1,6 @@
 import { user } from '../data/content';
 import { Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useRef } from 'react';
-import { useScrollSpread } from '../hooks/useScrollInteraction';
 
 const AbstractVisual = () => (
   <div className="relative w-full max-w-md mx-auto aspect-square flex items-center justify-center pointer-events-none">
@@ -55,45 +53,6 @@ const LinkedinIcon = ({ size = 20, className = '' }) => (
 );
 
 export function Hero() {
-  const containerRef = useRef(null);
-
-  // Scroll DOWN -> values move away from 0. Input range [0, 1] mapped to scroll progress [top of page, scrolled down]
-  const { y: headingY, opacity: headingOpacity } = useScrollSpread(containerRef, {
-    offset: ["start start", "end start"],
-    inputRange: [0, 0.5, 1],
-    yOutput: [0, -30, -60],
-    opacityOutput: [1, 0.5, 0]
-  });
-
-  const { y: sublineY, opacity: sublineOpacity } = useScrollSpread(containerRef, {
-    offset: ["start start", "end start"],
-    inputRange: [0, 0.5, 1],
-    yOutput: [0, -15, -30],
-    opacityOutput: [1, 0.6, 0]
-  });
-
-  const { y: descY, opacity: descOpacity } = useScrollSpread(containerRef, {
-    offset: ["start start", "end start"],
-    inputRange: [0, 0.5, 1],
-    yOutput: [0, 20, 40],
-    opacityOutput: [1, 0.8, 0]
-  });
-
-  const { x: buttonsX, y: buttonsY, opacity: buttonsOpacity } = useScrollSpread(containerRef, {
-    offset: ["start start", "end start"],
-    inputRange: [0, 0.5, 1],
-    xOutput: [0, -15, -30],
-    yOutput: [0, 30, 60],
-    opacityOutput: [1, 0.8, 0]
-  });
-
-  const { x: visualX, opacity: visualOpacity } = useScrollSpread(containerRef, {
-    offset: ["start start", "end start"],
-    inputRange: [0, 0.5, 1],
-    xOutput: [0, 40, 80],
-    opacityOutput: [1, 0.8, 0]
-  });
-
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -108,7 +67,7 @@ export function Hero() {
   };
 
   return (
-    <section ref={containerRef} className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+    <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
       <motion.div 
         variants={containerVariants}
         initial="hidden"
@@ -117,22 +76,22 @@ export function Hero() {
       >
         {/* Text Content */}
         <div className="flex-1 text-center md:text-left">
-          <motion.div variants={itemVariants} style={{ y: headingY, opacity: headingOpacity }} className="inline-flex items-center px-3 py-1 mb-6 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] text-xs font-semibold tracking-wide text-[var(--color-accent)] uppercase">
+          <motion.div variants={itemVariants} className="inline-flex items-center px-3 py-1 mb-6 rounded-full bg-[var(--bg-secondary)] border border-[var(--border-color)] text-xs font-semibold tracking-wide text-[var(--color-accent)] uppercase">
             {user.degree}
           </motion.div>
           
-          <motion.h1 variants={itemVariants} style={{ y: headingY, opacity: headingOpacity }} className="text-5xl md:text-7xl font-bold tracking-tight text-[var(--text-primary)] mb-2">
+          <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-bold tracking-tight text-[var(--text-primary)] mb-2">
             {user.headline}
           </motion.h1>
-          <motion.h2 variants={itemVariants} style={{ y: sublineY, opacity: sublineOpacity }} className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 gradient-text">
+          <motion.h2 variants={itemVariants} className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 gradient-text">
             {user.subline}
           </motion.h2>
           
-          <motion.p variants={itemVariants} style={{ y: descY, opacity: descOpacity }} className="text-lg md:text-xl text-[var(--text-secondary)] mb-10 max-w-xl mx-auto md:mx-0 leading-relaxed">
+          <motion.p variants={itemVariants} className="text-lg md:text-xl text-[var(--text-secondary)] mb-10 max-w-xl mx-auto md:mx-0 leading-relaxed">
             {user.bio}
           </motion.p>
           
-          <motion.div variants={itemVariants} style={{ x: buttonsX, y: buttonsY, opacity: buttonsOpacity }} className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mb-10">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 mb-10">
             <a href="#work" className="btn-primary w-full sm:w-auto group">
               View My Work
               <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">→</span>
@@ -142,7 +101,7 @@ export function Hero() {
             </a>
           </motion.div>
 
-          <motion.div variants={itemVariants} style={{ x: buttonsX, opacity: buttonsOpacity }} className="flex items-center justify-center md:justify-start gap-6 text-[var(--text-secondary)]">
+          <motion.div variants={itemVariants} className="flex items-center justify-center md:justify-start gap-6 text-[var(--text-secondary)]">
             <a href={user.github} target="_blank" rel="noreferrer" className="hover:text-[var(--text-primary)] transition-colors hover:scale-110 active:scale-95">
               <span className="sr-only">GitHub</span>
               <GithubIcon />
@@ -159,7 +118,7 @@ export function Hero() {
         </div>
 
         {/* Visual Content */}
-        <motion.div variants={itemVariants} style={{ x: visualX, opacity: visualOpacity }} className="flex-1 w-full">
+        <motion.div variants={itemVariants} className="flex-1 w-full">
           <AbstractVisual />
         </motion.div>
       </motion.div>

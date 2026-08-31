@@ -1,8 +1,6 @@
 import { user } from '../data/content';
 import { Mail } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { useRef } from 'react';
-import { useScrollSpread } from '../hooks/useScrollInteraction';
+import { motion } from 'framer-motion';
 
 const GithubIcon = ({ size = 24, className = '' }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -18,45 +16,6 @@ const LinkedinIcon = ({ size = 24, className = '' }) => (
   </svg>
 );
 
-const ContactCard = ({ card, index }) => {
-  const cardRef = useRef(null);
-  const prefersReducedMotion = useReducedMotion();
-
-  // Left card (index 0) moves from right to left (spreads out left)
-  // Center card (index 1) just scales up slightly
-  // Right card (index 2) moves from left to right (spreads out right)
-  const xDir = index === 0 ? 30 : index === 2 ? -30 : 0;
-  const scaleOutput = index === 1 ? [0.95, 1, 0.95] : [1, 1, 1];
-
-  const { x, scale, opacity } = useScrollSpread(cardRef, {
-    offset: ["start 95%", "center center"],
-    inputRange: [0, 1, 1],
-    xOutput: [xDir, 0, 0],
-    scaleOutput: [scaleOutput[0], scaleOutput[1], scaleOutput[1]],
-    opacityOutput: [0, 1, 1]
-  });
-
-  return (
-    <motion.a 
-      ref={cardRef}
-      style={prefersReducedMotion ? {} : { x, scale, opacity }}
-      href={card.link}
-      target="_blank"
-      rel="noreferrer"
-      className="group p-10 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl flex flex-col items-center text-center hover:border-[var(--text-primary)] hover:-translate-y-2 transition-all duration-300"
-    >
-      <div className="mb-6 text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors duration-300">
-        {card.icon}
-      </div>
-      <h3 className="text-xl font-bold mb-2 text-[var(--text-primary)] relative">
-        {card.name}
-        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[var(--text-primary)] group-hover:w-full transition-all duration-300" />
-      </h3>
-      <p className="text-sm text-[var(--text-secondary)]">{card.label}</p>
-    </motion.a>
-  );
-};
-
 export function Contact() {
   const cards = [
     { name: 'Email', icon: <Mail size={24} />, link: `mailto:${user.email}`, label: 'Send an email' },
@@ -64,18 +23,28 @@ export function Contact() {
     { name: 'LinkedIn', icon: <LinkedinIcon />, link: user.linkedin, label: 'Connect professionally' },
   ];
 
-  const containerRef = useRef(null);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15 }
+    }
+  };
 
-  const { y: headerY, opacity: headerOpacity } = useScrollSpread(containerRef, {
-    offset: ["start end", "end start"],
-    inputRange: [0, 0.2, 1],
-    yOutput: [30, 0, -30],
-    opacityOutput: [0, 1, 0.5]
-  });
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    show: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
+  };
 
   return (
-    <section ref={containerRef} className="section-container" id="contact">
-      <motion.div style={{ y: headerY, opacity: headerOpacity }} className="text-center mb-16">
+    <section className="section-container" id="contact">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.6 }}
+        className="text-center mb-16"
+      >
         <div className="text-xs font-bold tracking-widest text-[var(--text-secondary)] uppercase mb-6">
           05 — CONTACT
         </div>
@@ -87,11 +56,33 @@ export function Contact() {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-50px" }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+      >
         {cards.map((card, index) => (
-          <ContactCard key={index} card={card} index={index} />
+          <motion.a 
+            variants={cardVariants}
+            key={index} 
+            href={card.link}
+            target="_blank"
+            rel="noreferrer"
+            className="group p-10 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl flex flex-col items-center text-center hover:border-[var(--text-primary)] hover:-translate-y-2 transition-all duration-300"
+          >
+            <div className="mb-6 text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors duration-300">
+              {card.icon}
+            </div>
+            <h3 className="text-xl font-bold mb-2 text-[var(--text-primary)] relative">
+              {card.name}
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[var(--text-primary)] group-hover:w-full transition-all duration-300" />
+            </h3>
+            <p className="text-sm text-[var(--text-secondary)]">{card.label}</p>
+          </motion.a>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
