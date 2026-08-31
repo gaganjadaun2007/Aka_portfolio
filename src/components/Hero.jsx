@@ -1,5 +1,5 @@
 import { user } from '../data/content';
-import { Mail } from 'lucide-react';
+import { Mail, Code2, Terminal, Globe, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const AbstractVisual = () => (
@@ -101,18 +101,34 @@ export function Hero() {
             </a>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="flex items-center justify-center md:justify-start gap-6 text-[var(--text-secondary)]">
-            <a href={user.github} target="_blank" rel="noreferrer" className="hover:text-[var(--text-primary)] transition-colors hover:scale-110 active:scale-95">
+          <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center md:justify-start gap-5 text-[var(--text-secondary)]">
+            <a href={user.github} target="_blank" rel="noreferrer" className="hover:text-[var(--text-primary)] transition-colors hover:scale-110 active:scale-95" title="GitHub">
               <span className="sr-only">GitHub</span>
               <GithubIcon />
             </a>
-            <a href={user.linkedin} target="_blank" rel="noreferrer" className="hover:text-[#0A66C2] transition-colors hover:scale-110 active:scale-95">
+            <a href={user.linkedin} target="_blank" rel="noreferrer" className="hover:text-[#0A66C2] transition-colors hover:scale-110 active:scale-95" title="LinkedIn">
               <span className="sr-only">LinkedIn</span>
               <LinkedinIcon />
             </a>
-            <a href={`mailto:${user.email}`} className="hover:text-[var(--text-primary)] transition-colors hover:scale-110 active:scale-95">
+            <a href={`mailto:${user.email}`} className="hover:text-[var(--text-primary)] transition-colors hover:scale-110 active:scale-95" title="Email">
               <span className="sr-only">Email</span>
               <Mail size={20} />
+            </a>
+            <a href={user.leetcode} target="_blank" rel="noreferrer" className="hover:text-[#FFA116] transition-colors hover:scale-110 active:scale-95" title="LeetCode">
+              <span className="sr-only">LeetCode</span>
+              <Code2 size={20} />
+            </a>
+            <a href={user.hackerrank} target="_blank" rel="noreferrer" className="hover:text-[#2EC866] transition-colors hover:scale-110 active:scale-95" title="HackerRank">
+              <span className="sr-only">HackerRank</span>
+              <Terminal size={20} />
+            </a>
+            <a href={user.hackerearth} target="_blank" rel="noreferrer" className="hover:text-[#323754] transition-colors hover:scale-110 active:scale-95" title="HackerEarth">
+              <span className="sr-only">HackerEarth</span>
+              <Globe size={20} />
+            </a>
+            <a href={user.geeksforgeeks} target="_blank" rel="noreferrer" className="hover:text-[#2F8D46] transition-colors hover:scale-110 active:scale-95" title="GeeksforGeeks">
+              <span className="sr-only">GeeksforGeeks</span>
+              <BookOpen size={20} />
             </a>
           </motion.div>
         </div>

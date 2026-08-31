@@ -1,5 +1,5 @@
 import { user } from '../data/content';
-import { Mail } from 'lucide-react';
+import { Mail, Code2, Terminal, Globe, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const GithubIcon = ({ size = 24, className = '' }) => (
@@ -21,6 +21,10 @@ export function Contact() {
     { name: 'Email', icon: <Mail size={24} />, link: `mailto:${user.email}`, label: 'Send an email' },
     { name: 'GitHub', icon: <GithubIcon />, link: user.github, label: 'View repositories' },
     { name: 'LinkedIn', icon: <LinkedinIcon />, link: user.linkedin, label: 'Connect professionally' },
+    { name: 'LeetCode', icon: <Code2 size={24} />, link: user.leetcode, label: 'Coding challenges' },
+    { name: 'HackerRank', icon: <Terminal size={24} />, link: user.hackerrank, label: 'Algorithms & logic' },
+    { name: 'HackerEarth', icon: <Globe size={24} />, link: user.hackerearth, label: 'Competitive programming' },
+    { name: 'GeeksforGeeks', icon: <BookOpen size={24} />, link: user.geeksforgeeks, label: 'CS fundamentals' },
   ];
 
   const containerVariants = {
@@ -61,7 +65,7 @@ export function Contact() {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: "-50px" }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
       >
         {cards.map((card, index) => (
           <motion.a 
