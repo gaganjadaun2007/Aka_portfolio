@@ -48,7 +48,7 @@ export const stack = [
   },
   {
     category: 'Frontend',
-    technologies: ['HTML', 'CSS', 'React'],
+    technologies: ['HTML', 'CSS', 'JavaScript'],
   },
   {
     category: 'Database',

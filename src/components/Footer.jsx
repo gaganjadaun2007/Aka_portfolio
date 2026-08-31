@@ -8,7 +8,7 @@ export function Footer() {
           © {new Date().getFullYear()} {user.name} — Engineering Profile
         </div>
         <div className="text-xs text-[var(--color-text-secondary)] font-mono">
-          Built with React & Tailwind
+          Built with Tailwind
         </div>
       </div>
     </footer>
