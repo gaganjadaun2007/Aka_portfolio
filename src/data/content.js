@@ -1,7 +1,7 @@
 export const user = {
-  name: 'Gagan',
+  name: 'Akanksha Thakur',
   degree: 'B.Tech CSE (AI & ML)',
-  headline: 'Hi, I\'m Gagan.',
+  headline: 'Hi, I\'m Akanksha.',
   subline: 'I build things with code.',
   bio: 'Computer Science Engineering student exploring AI/ML, software development and real-world problem solving through practical projects.',
   email: '[ADD EMAIL]',
