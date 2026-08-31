@@ -7,7 +7,7 @@ export const user = {
   email: 'thakurakanksha592@gmail.com',
   github: 'https://github.com/Akankshathakur06',
   linkedin: 'https://www.linkedin.com/in/akanksha-thakur-54b9b0353',
-  leetcode: '[ADD LEETCODE URL]',
+  leetcode: 'https://leetcode.com/u/Akanksha_Thakur123',
   hackerrank: '[ADD HACKERRANK URL]',
   hackerearth: '[ADD HACKEREARTH URL]',
   geeksforgeeks: '[ADD GEEKSFORGEEKS URL]',
